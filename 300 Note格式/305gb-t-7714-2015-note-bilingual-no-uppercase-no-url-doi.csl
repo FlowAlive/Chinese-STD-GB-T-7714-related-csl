@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="in-text" name-as-sort-order="all" sort-separator=" " demote-non-dropping-particle="never" initialize-with=" " initialize-with-hyphen="false" page-range-format="expanded" default-locale="zh-CN">
+<style xmlns="http://purl.org/net/xbiblio/csl" version="1.0" class="note" name-as-sort-order="all" sort-separator=" " demote-non-dropping-particle="never" initialize-with=" " initialize-with-hyphen="false" page-range-format="expanded" default-locale="zh-CN">
   <info>
-    <title>中国生态农业学报</title>
-    <id>http://www.zotero.org/styles/chinese-journal-of-eco-agriculture</id>
-    <link href="http://www.zotero.org/styles/chinese-journal-of-eco-agriculture" rel="self"/>
-    <link href="http://www.zotero.org/styles/gb-t-7714-2015-numeric-bilingual-no-url-doi" rel="template"/>
-    <link href="http://www.ecoagri.ac.cn/news_list.htm?column=xiazaizhongxin" rel="documentation"/>
+    <title>GB/T 7714-2015 (脚注, 双语, 姓名取消大写, 无 URL DOI)</title>
+    <id>http://www.zotero.org/styles/gb-t-7714-2015-note-bilingual-no-uppercase-no-url-doi</id>
+    <link href="http://www.zotero.org/styles/gb-t-7714-2015-note-bilingual-no-uppercase-no-url-doi" rel="self"/>
+    <link href="http://www.zotero.org/styles/china-national-standard-gb-t-7714-2015-note" rel="template"/>
+    <link href="https://std.samr.gov.cn/gb/search/gbDetailed?id=71F772D8055ED3A7E05397BE0A0AB82A" rel="documentation"/>
     <author>
+      <name>牛耕田</name>
+      <email>buffalo_d@163.com</email>
+    </author>
+    <contributor>
       <name>Zeping Lee</name>
       <email>zepinglee@gmail.com</email>
-    </author>
-    <category citation-format="numeric"/>
-    <category field="biology"/>
-    <issn>2096-6237</issn>
-    <updated>2023-10-07T20:38:13+08:00</updated>
+    </contributor>
+    <category citation-format="note"/>
+    <category field="generic-base"/>
+    <summary>1. 按照语言显示“等”或“et al.”；2. 姓名取消全大写；3. 仅纯电子资源显示引用日期和 URL；4. 无 DOI。</summary>
+    <updated>2023-04-15T15:52:20+08:00</updated>
     <rights license="http://creativecommons.org/licenses/by-sa/3.0/">This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 License</rights>
   </info>
   <locale xml:lang="zh">
@@ -37,16 +41,14 @@
       <date-part name="day" form="numeric-leading-zeros" prefix="-" range-delimiter="/"/>
     </date>
     <terms>
+      <term name="ibid">同上</term>
       <term name="page-range-delimiter">-</term>
     </terms>
   </locale>
   <!-- 主要责任者 -->
   <macro name="author">
     <names variable="author">
-      <name>
-        <name-part name="family" text-case="uppercase"/>
-      </name>
-      <institution/>
+      <name/>
       <substitute>
         <names variable="composer"/>
         <names variable="illustrator"/>
@@ -182,20 +184,14 @@
   <!-- 其他责任者 -->
   <macro name="secondary-contributors">
     <names variable="translator">
-      <name>
-        <name-part name="family" text-case="uppercase"/>
-      </name>
-      <institution/>
+      <name/>
       <label form="short" prefix=", "/>
     </names>
   </macro>
   <!-- 专著主要责任者 -->
   <macro name="container-contributors">
     <names variable="editor">
-      <name>
-        <name-part name="family" text-case="uppercase"/>
-      </name>
-      <institution/>
+      <name/>
       <substitute>
         <names variable="editorial-director"/>
         <names variable="collection-editor"/>
@@ -237,10 +233,9 @@
           <text variable="container-title"/>
           <text macro="issued-date"/>
         </group>
-        <text variable="page" prefix="(" suffix=")"/>
+        <text macro="locator" prefix="(" suffix=")"/>
       </if>
       <else>
-        <!-- 期刊、杂志的出处项：“刊名, 年, 卷(期): 页码[引用日期]” -->
         <group delimiter=": ">
           <group>
             <group delimiter=", ">
@@ -250,7 +245,7 @@
             </group>
             <text variable="issue" prefix="(" suffix=")"/>
           </group>
-          <text variable="page"/>
+          <text macro="locator"/>
         </group>
       </else>
     </choose>
@@ -296,7 +291,7 @@
             </group>
             <text macro="issued-year"/>
           </group>
-          <text variable="page"/>
+          <text macro="locator"/>
         </group>
         <text macro="accessed-date"/>
       </else-if>
@@ -338,6 +333,17 @@
   <!-- 出版日期，用于报纸文献、专利的“公告日期或公开日期”、电子资源的“更新或修改日期” -->
   <macro name="issued-date">
     <date variable="issued" form="numeric"/>
+  </macro>
+  <!-- 引文页码 -->
+  <macro name="locator">
+    <choose>
+      <if locator="page">
+        <text variable="locator"/>
+      </if>
+      <else>
+        <text variable="page"/>
+      </else>
+    </choose>
   </macro>
   <!-- 引用日期 -->
   <macro name="accessed-date">
@@ -413,20 +419,44 @@
       <text macro="access"/>
     </group>
   </macro>
-  <citation collapse="citation-number" after-collapse-delimiter=",">
-    <sort>
-      <key variable="citation-number"/>
-    </sort>
-    <layout vertical-align="sup" delimiter="," prefix="[" suffix="]">
-      <text variable="citation-number"/>
+  <!-- 脚注中引用的格式 -->
+  <macro name="note-layout">
+    <choose>
+      <if position="ibid-with-locator">
+        <group delimiter=": ">
+          <text term="ibid"/>
+          <text variable="locator"/>
+        </group>
+      </if>
+      <else-if position="ibid">
+        <text term="ibid"/>
+      </else-if>
+      <else-if position="subsequent">
+        <group delimiter=": ">
+          <!-- 国标要求提供的示例中脚注编号是用圈码，在 CSL 中无法实现 -->
+          <text variable="first-reference-note-number" prefix="同"/>
+          <text variable="locator"/>
+        </group>
+      </else-if>
+      <else>
+        <text macro="entry-layout"/>
+      </else>
+    </choose>
+  </macro>
+  <citation et-al-min="4" et-al-use-first="3">
+    <layout delimiter="; " suffix="." locale="en">
+      <text macro="note-layout"/>
+    </layout>
+    <layout delimiter="; " suffix=".">
+      <text macro="note-layout"/>
     </layout>
   </citation>
   <bibliography entry-spacing="0" et-al-min="4" et-al-use-first="3" second-field-align="flush">
-    <layout locale="en">
+    <layout suffix="." locale="en">
       <text variable="citation-number" prefix="[" suffix="]"/>
       <text macro="entry-layout"/>
     </layout>
-    <layout>
+    <layout suffix=".">
       <text variable="citation-number" prefix="[" suffix="]"/>
       <text macro="entry-layout"/>
     </layout>
